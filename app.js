@@ -1,31 +1,28 @@
 const express = require('express');
-//const { v4: uuidv4 } = require('uuid'); // Importar uuid para gerar GUIDs
 const { randomUUID } = require('crypto'); 
 
 const app = express();
-app.use(express.json()); // Middleware para interpretar JSON
+app.use(express.json()); 
 
-// Array para armazenar as pessoas
 let pessoas = [];
 
-// Rota GET: Retorna a lista de pessoas
+//  GET
 app.get('/pessoas', (req, res) => {
     res.json(pessoas);
 });
 
-// Rota POST: Adiciona uma nova pessoa ao array
+//  POST
 app.post('/pessoas', (req, res) => {
     const { nome, celular } = req.body;
     const novaPessoa = {
-        id: randomUUID(), // Gera um GUID para o ID
+        id: randomUUID(), 
         nome,
         celular
     };
     pessoas.push(novaPessoa);
-    res.status(201).json(novaPessoa); // Retorna a pessoa criada com status 201 (Criado)
-});
+    res.status(201).json(novaPessoa);
 
-// Rota PUT para atualizar uma pessoa existente (usando o ID)
+//  PUT
 app.put('/pessoas/:id', (req, res) => {
     const { id } = req.params;
     const { nome, celular } = req.body;
@@ -40,15 +37,15 @@ app.put('/pessoas/:id', (req, res) => {
     }
 });
 
-// Rota DELETE para excluir uma pessoa pelo ID
+//  DELETE 
 app.delete('/pessoas/:id', (req, res) => {
     const { id } = req.params;
     const pessoaIndex = pessoas.findIndex(pessoa => pessoa.id === id);
 
     if (pessoaIndex !== -1) {
-        // Remove a pessoa do array
+       
         pessoas.splice(pessoaIndex, 1);
-        res.status(204).send(); // 204 No Content para uma exclusão bem-sucedida
+        res.status(204).send(); 
     } else {
         res.status(404).json({ message: 'Pessoa não encontrada' });
     }
